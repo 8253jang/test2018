@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="empSelectMapper">
+
+<!-- 반복되어지는 쿼리를 미리 선언(sql) 하여 필요할때  참조(include) 할수 있다. -->
+<sql id="empColumnSql">
+  empno, ename , job, sal, hiredate
+</sql>
+
+<resultMap type="empDTO" id="empResultMap">
+ <id column="empno" property="empno" />
+ <result column="ename" property="empName"/>
+ <result column="job" property="job"/>
+ <result column="sal" property="sal"/>
+ <result column="hiredate" property="hiredate"/>
+</resultMap>
+
+
+ <!-- 모든 레코드 검색 -->
+ <select id="selectAll" resultMap="empResultMap">
+    select <include refid="empColumnSql"/>
+    from emp order by empno
+ </select>
+ 
+ <!-- 사원번호에 해당하는 레코드 검색-->
+ <select id="selectByEmpNo" parameterType="int" resultMap="empResultMap">
+   select <include refid="empColumnSql"/> 
+   from emp
+   where empno=#{value}
+ </select>
+ 
+ <!-- 인수로 받는 sal의 범위내에(최소, 최대) 있는 레코드 검색 -->
+ <select id="selectBySal" parameterType="map" resultMap="empResultMap">
+   select <include refid="empColumnSql"/>
+   from emp
+   where sal &gt; #{min} and sal &lt; #{max}
+   order by sal
+ </select>
+ 
+ <!-- 정렬대상을 인수로 받아 레코드 정렬하여 검색 -->
+ <select id="selectByOrder" parameterType="string" resultMap="empResultMap">
+   select <include refid="empColumnSql"/>
+   from emp
+   order by ${value} 
+ </select>
+ 
+ <!-- 검색필드와 검색단어를 인수로 받아 검색 -->
+ <select id="selectBySearch" parameterType="map" resultMap="empResultMap">
+    select <include refid="empColumnSql"/>
+    from emp
+    where  upper(${keyField}) like '%' || upper(#{keyWord}) || '%'
+ </select>
+ 
+ <!-- 
+     ename에 해당하는 사원의 ename, job, sal을 변경한다.
+  -->
+  <update id="updateByEname" parameterType="map" >
+     update emp
+     set ename=#{empDTO.empName} , job=#{empDTO.job}, sal=#{empDTO.sal}
+     where ename=#{whereEname}
+  
+  </update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

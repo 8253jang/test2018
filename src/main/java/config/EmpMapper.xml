@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="empMapper">
+  <select id="empByName" resultType="string">
+      select ename from emp
+  </select>
+  
+  <!-- 레코드 삽입 -->
+  <insert id="empInsert" parameterType="empDTO" >
+    insert into emp(empno,ename, job, sal, hiredate) 
+    values(#{empno},#{empName},#{job},#{sal}, sysdate)
+  </insert>
+  
+  
+  <!-- 모든 레코드 검색하기 -->
+  <select id="selectAll" resultType="empDTO">
+    select empno, ename as empName, job, sal, hiredate from emp
+  </select>
+  
+  <!-- 레코드 삭제 -->
+  <delete id="empDelete" parameterType="int">
+    delete from emp where empno=#{value}
+  </delete>
+  
+  <!-- 레코드 수정 -->
+  <update id="empUpdate" parameterType="empDTO">
+    update emp
+    set ename=#{empName} , job=#{job}, sal=#{sal}
+    where empno=#{empno}
+  </update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
