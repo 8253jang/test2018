@@ -209,6 +209,10 @@ public class EmpDAO {
 		 }
 		 
 	 }
+	 
+	 public void getTest(){
+		 System.out.println(11);
+	 }
 		
 	
 }
